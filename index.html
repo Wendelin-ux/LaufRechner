@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lauf-Rechner</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" href="icon-512.png">
+  <meta name="theme-color" content="#263238">
+</head>
+<body>
+
+<h1>Lauf-Rechner</h1>
+
+<div class="app-container">
+
+  <div class="mode-buttons">
+    <button onclick="setMode('paceToSpeed')" id="btn-paceToSpeed" class="mode-btn">min/km → km/h</button>
+    <button onclick="setMode('speedToPace')" id="btn-speedToPace" class="mode-btn">km/h → min/km</button>
+    <button onclick="setMode('distanceTime')" id="btn-distanceTime" class="mode-btn">Zeit & Distanz</button>
+  </div>
+
+  <div id="input-group">
+
+    <div id="paceToSpeed">
+      <label for="minutes">Minuten pro km:</label>
+      <input type="number" id="minutes" placeholder="Minuten" min="0">
+      <label for="seconds">Sekunden:</label>
+      <input type="number" id="seconds" placeholder="Sekunden" min="0" max="59">
+    </div>
+
+    <div id="speedToPace" style="display: none;">
+      <label for="kmh">Geschwindigkeit (km/h):</label>
+      <input type="number" id="kmh" placeholder="z. B. 12" min="0">
+    </div>
+
+    <div id="distanceTime" style="display: none;">
+      <label for="distance">Distanz (km):</label>
+      <input type="number" id="distance" placeholder="z. B. 5" min="0">
+      <label for="timeMin">Zeit (Minuten):</label>
+      <input type="number" id="timeMin" placeholder="Minuten" min="0">
+      <label for="timeSec">Zeit (Sekunden):</label>
+      <input type="number" id="timeSec" placeholder="Sekunden" min="0" max="59">
+    </div>
+
+  </div>
+
+  <button onclick="calculate()">Berechnen</button>
+  <p id="result">Ergebnis: --</p>
+
+</div>
+
+<script src="script.js"></script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('✅ Service Worker registriert:', reg.scope))
+      .catch(err => console.error('❌ Fehler beim Registrieren des SW:', err));
+  }
+</script>
+
+<!----> 
+<script>
+  navigator.serviceWorker.getRegistrations().then(function(regs) {
+    const p = document.createElement("p");
+    if (regs.length > 0) {
+      p.textContent = "✅ Es sind " + regs.length + " Service Worker registriert.";
+      p.style.color = "lime";
+    } else {
+      p.textContent = "❌ Kein Service Worker registriert.";
+      p.style.color = "red";
+    }
+    document.body.appendChild(p);
+  });
+</script>
+<!----> 
+
+</body>
+</html>
